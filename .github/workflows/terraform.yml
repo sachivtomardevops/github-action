@@ -1,0 +1,48 @@
+name: Terraform Pipeline
+
+on:
+  push:
+    branches:
+      - 'feature/*'
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  terraform:
+    name: "Terraform Init, Validate & Plan"
+    runs-on: ubuntu-latest
+
+    # Agar aapke code me parent directory hai jaha main.tf hai:
+    defaults:
+      run:
+        working-directory: ./parent
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.6.0
+
+      # Azure credentials pass karne ke liye (agar secrets set hain)
+      - name: Azure Login
+        uses: azure/login@v1
+        if: ${{ secrets.AZURE_CREDENTIALS != '' }}
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format Check
+        run: terraform fmt -check
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan
