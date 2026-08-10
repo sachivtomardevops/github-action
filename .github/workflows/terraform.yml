@@ -28,10 +28,10 @@ jobs:
           terraform_version: 1.6.0
 
       # Azure Login using GitHub Secret
-      - name: Azure Login
-        uses: azure/login@v1
-        with:
-          creds: ${{ secrets.AZURE_CREDENTIALS }}
+      # name: Azure Login
+      #  uses: azure/login@v1
+       # with:
+        #  creds: ${{ secrets.AZURE_CREDENTIALS }}
 
       - name: Terraform Init
         run: terraform init
