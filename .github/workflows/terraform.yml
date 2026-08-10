@@ -14,7 +14,6 @@ jobs:
     name: "Terraform Init, Validate & Plan"
     runs-on: ubuntu-latest
 
-    # Agar aapke code me parent directory hai jaha main.tf hai:
     defaults:
       run:
         working-directory: ./parent
@@ -28,10 +27,9 @@ jobs:
         with:
           terraform_version: 1.6.0
 
-      # Azure credentials pass karne ke liye (agar secrets set hain)
+      # Azure Login using GitHub Secret
       - name: Azure Login
         uses: azure/login@v1
-        if: ${{ secrets.AZURE_CREDENTIALS != '' }}
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
